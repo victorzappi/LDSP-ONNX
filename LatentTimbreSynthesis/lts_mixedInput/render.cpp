@@ -16,15 +16,15 @@ float output[segment_size] = {0};
 
 float interpolation = 0.5;
 
-std::string filename_mu = {"mu1.lts"};	// name of the mu bin file (in project folder)
-std::string filename_logvar = {"logvar1.lts"}; // name of the logvar bin file (in project folder)
-std::string filename_audio = {"472454__erokia__msfxp-sound-402.wav"};	// name of the sound file (in project folder)
+std::string filename_mu = "472451__erokia__msfxp-sound-399_mu.lts";	// name of the mu bin file (in project folder)
+std::string filename_logvar = "472451__erokia__msfxp-sound-399_logvar.lts"; // name of the logvar bin file (in project folder)
+std::string filename_audio = "472454__erokia__msfxp-sound-402.wav";	// name of the sound file (in project folder)
 std::vector<float> muFileSamples;
 std::vector<float> logvarFileSamples;
 std::vector<float> audioFileSamples;
 int readPointer_mu = 0;
 int readPointer_logvar = 0;
-int readPointer_audio = 0;
+int readPointer_audioFile = 0;
 std::vector<float> muInput;
 std::vector<float> logvarInput;
 std::vector<float> audioInput;
@@ -60,10 +60,23 @@ bool setup(LDSPcontext *context, void *userData)
 {
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
+    {
         printf("unable to setup ortModel");
+        return false;
+    }
 
     muFileSamples = read_binary_file(filename_mu);
+    if(muFileSamples.empty())
+    {
+    	printf("Error loading binary file '%s'\n", filename_mu.c_str());
+    	return false;
+	}
     logvarFileSamples = read_binary_file(filename_logvar);
+    if(logvarFileSamples.empty())
+    {
+    	printf("Error loading binary file '%s'\n", filename_logvar.c_str());
+    	return false;
+	}
 
     muInput.resize(latent_dim);
     logvarInput.resize(latent_dim);
@@ -124,7 +137,7 @@ void render(LDSPcontext *context, void *userData)
             fillLatentInput(muFileSamples, logvarFileSamples, muInput, logvarInput, readPointer_mu, readPointer_logvar);
             // if not live input, combine latent files with audio file
             if(!liveInput)
-                fillAudioInput(audioFileSamples, audioInput, readPointer_audio);
+                fillAudioInput(audioFileSamples, audioInput, readPointer_audioFile);
             
             
             // combine letent inputs, audio input and interpolation into single input data structure

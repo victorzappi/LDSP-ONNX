@@ -26,7 +26,10 @@ bool setup(LDSPcontext *context, void *userData)
 {
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
+    {
         printf("unable to setup ortModel");
+        return false;
+    }
 
 
     audioFileSamples[0] = AudioFileUtilities::loadMono(filename[0]);	

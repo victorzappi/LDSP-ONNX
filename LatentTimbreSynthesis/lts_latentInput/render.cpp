@@ -16,8 +16,8 @@ float output[segment_size] = {0};
 
 float interpolation = 0.5;
 
-std::string filename_mu[2] = {"mu1.lts", "mu2.lts"};	// name of the mu bin files (in project folder)
-std::string filename_logvar[2] = {"logvar1.lts", "logvar2.lts"};	// name of the logvar bin files (in project folder)
+std::string filename_mu[2] = {"472451__erokia__msfxp-sound-399_mu.lts", "472454__erokia__msfxp-sound-402_mu.lts"};	// name of the mu bin files (in project folder)
+std::string filename_logvar[2] = {"472451__erokia__msfxp-sound-399_logvar.lts", "472454__erokia__msfxp-sound-402_logvar.lts"};	// name of the logvar bin files (in project folder)
 std::vector<float> muFileSamples[2];
 std::vector<float> logvarFileSamples[2];
 int readPointer[2] = {0};
@@ -54,13 +54,37 @@ bool setup(LDSPcontext *context, void *userData)
 {
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
+    {
         printf("unable to setup ortModel");
+        return false;
+    }
 
 
     muFileSamples[0] = read_binary_file(filename_mu[0]);
+    if(muFileSamples[0].empty())
+    {
+    	printf("Error loading binary file '%s'\n", filename_mu[0].c_str());
+    	return false;
+	}
     muFileSamples[1] = read_binary_file(filename_mu[1]);
+    if(muFileSamples[1].empty())
+    {
+    	printf("Error loading binary file '%s'\n", filename_mu[1].c_str());
+    	return false;
+	}
+    
     logvarFileSamples[0] = read_binary_file(filename_logvar[0]);
+    if(logvarFileSamples[0].empty())
+    {
+    	printf("Error loading binary file '%s'\n", filename_logvar[0].c_str());
+    	return false;
+	}
     logvarFileSamples[1] = read_binary_file(filename_logvar[1]);
+    if(logvarFileSamples[1].empty())
+    {
+    	printf("Error loading binary file '%s'\n", filename_logvar[1].c_str());
+    	return false;
+	}
 
     muInput[0].resize(latent_dim);
     muInput[1].resize(latent_dim);
