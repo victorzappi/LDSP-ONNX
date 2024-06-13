@@ -1,12 +1,9 @@
 #include "LDSP.h"
 #include "libraries/OrtModel/OrtModel.h"
 
-
+OrtModel ortModel;
 std::string modelType = "onnx";
 std::string modelName = "AutoGuitarAmp";
-int numInputSamples = 1;
-
-OrtModel ortModel;
 
 float input[1] = {0};
 float output[1];

@@ -3,6 +3,8 @@
 #include <fstream>
 
 OrtModel model;
+std::string modelType = "onnx";
+std::string modelName = "ED";
 
 const int w = 16;
 const int u = 64;
@@ -22,8 +24,6 @@ int readPointer;
 float circBuff[circBuffLength];
 
 //--------------------------------
-std::string modelType = "onnx";
-std::string modelName = "ED";
 
 unsigned long long * inferenceTimes;
 int logPtr = 0;

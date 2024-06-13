@@ -2,14 +2,13 @@
 #include "libraries/OrtModel/OrtModel.h"
 
 OrtModel model;
-
 std::string modelType = "onnx";
 std::string modelName = "GuitarLSTM";
 
-float *input;
-float output[1] = {0};
+const int inputSize = 5;
 
-int inputSize;
+float input[inputSize] = {0};
+float output[1] = {0};
 
 const int circBuffLength = 48000; // a reasonably large buffer, to limit end-of-buffer overhead
 int writePointer;
@@ -19,9 +18,6 @@ float circBuff[circBuffLength];
 
 bool setup(LDSPcontext *context, void *userData)
 {
-
-    inputSize = 5;
-    input = new float[inputSize];
 
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
@@ -63,5 +59,4 @@ void render(LDSPcontext *context, void *userData)
 
 void cleanup(LDSPcontext *context, void *userData)
 {
-    delete[] input;
 }

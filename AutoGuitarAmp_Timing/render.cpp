@@ -4,15 +4,15 @@
 #include <fstream> // ofstream
 
 OrtModel model;
+std::string modelType = "onnx";
+std::string modelName = "AutoGuitarAmp";
 
 float input[1];
 float output[1] = {0};
 
-int outputSize = 1;
-
 //-------------------------------
-std::string modelType = "onnx";
-std::string modelName = "AutoGuitarAmp";
+
+int outputSize = 1;
 
 unsigned long long * inferenceTimes;
 int logPtr = 0;

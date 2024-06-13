@@ -4,12 +4,14 @@
 #include <fstream> // ofstream
 
 OrtModel model;
+std::string modelType = "onnx";
+std::string modelName = "GuitarLSTM";
 
-float *input;
+const int inputSize = 5;
+
+float input[inputSize] = {0};
 float output[1] = {0};
 
-int inputSize;
-int outputSize = 1;
 
 const int circBuffLength = 48000; // a reasonably large buffer, to limit end-of-buffer overhead
 int writePointer;
@@ -17,10 +19,8 @@ int readPointer;
 float circBuff[circBuffLength];
 
 //--------------------------------
-std::string modelType = "onnx";
-std::string modelName = "GuitarLSTM";
 
-
+int outputSize = 1;
 
 unsigned long long * inferenceTimes;
 int logPtr = 0;
@@ -34,10 +34,6 @@ bool setup(LDSPcontext *context, void *userData)
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
         printf("unable to setup ortModel");
-
-    inputSize = 5;
-    input = new float[inputSize];
-
 
     writePointer = inputSize-1; // the first intputSize-1 samples must be zeros
     readPointer = 0;
@@ -91,9 +87,6 @@ void render(LDSPcontext *context, void *userData)
 
 void cleanup(LDSPcontext *context, void *userData)
 {
-    delete[] input;
-
-    //--------------------------------
     std::string timingLogDir = ".";
     std::string timingLogFileName = "inferenceTiming_"+modelName+"_out"+std::to_string(outputSize)+"_onnx.txt";
     std::string timingLogFilePath = timingLogDir+"/"+timingLogFileName;
