@@ -1,3 +1,10 @@
+/* 
+    Neural model taken from:
+    Wright, Alec, Eero-Pekka Damskägg, Lauri Juvela, and Vesa Välimäki. "Real-time guitar amplifier emulation with deep learning." Applied Sciences 10, no. 3 (2020): 766.
+    and
+    https://github.com/Alec-Wright/Automated-GuitarAmpModelling
+*/
+
 #include "LDSP.h"
 #include "libraries/OrtModel/OrtModel.h"
 #include <chrono>

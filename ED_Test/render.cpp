@@ -1,3 +1,9 @@
+/* 
+    Neural model taken from:
+    Simionato, Riccardo, and Stefano Fasciani. "Fully Conditioned and Low-latency Black-box Modeling of Analog Compression." In Proceedings of the International Conference on Digital Audio Effects. DAFx Board, 2023.
+    https://github.com/RiccardoVib/CONDITIONED-MODELING-OF-OPTICAL-COMPRESSOR
+*/
+
 #include "LDSP.h"
 #include "libraries/OrtModel/OrtModel.h"
 
