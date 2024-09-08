@@ -28,7 +28,7 @@ bool setup(LDSPcontext *context, void *userData)
 
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
-        printf("unable to setup ortModel");
+        printf("unable to setup model");
 
     writePointer = inputSize-1; // the first intputSize-1 samples must be zeros
     readPointer = 0;
@@ -66,4 +66,5 @@ void render(LDSPcontext *context, void *userData)
 
 void cleanup(LDSPcontext *context, void *userData)
 {
+    model.cleanup();
 }

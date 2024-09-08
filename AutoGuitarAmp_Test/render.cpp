@@ -8,7 +8,7 @@
 #include "LDSP.h"
 #include "libraries/OrtModel/OrtModel.h"
 
-OrtModel ortModel;
+OrtModel model;
 std::string modelType = "onnx";
 std::string modelName = "AutoGuitarAmp";
 
@@ -19,8 +19,8 @@ float output[1];
 bool setup(LDSPcontext *context, void *userData) {
 
   std::string modelPath = "./"+modelName+"."+modelType;
-  if (!ortModel.setup("session1", modelPath))
-    printf("unable to setup ortModel");
+  if (!model.setup("session1", modelPath))
+    printf("unable to setup model");
 
   return true;
 }
@@ -32,7 +32,7 @@ void render(LDSPcontext *context, void *userData)
     input[0] = audioRead(context, n, 0);
 
     // Run the model
-    ortModel.run(input, output);
+    model.run(input, output);
 
     // passthrough test, because the model may not be trained
     audioWrite(context, n, 0, input[0]);
@@ -42,5 +42,6 @@ void render(LDSPcontext *context, void *userData)
 
 void cleanup(LDSPcontext *context, void *userData)
 {
+  model.cleanup();
 }
 

@@ -23,7 +23,7 @@ bool setup(LDSPcontext *context, void *userData)
 {
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath))
-      printf("unable to setup ortModel\n");
+      printf("unable to setup model\n");
 
     //--------------------------------
     inferenceTimes = new unsigned long long[context->audioSampleRate*testDuration_sec*1.01];
@@ -74,4 +74,6 @@ void cleanup(LDSPcontext *context, void *userData)
   logFile.close();
 
   delete[] inferenceTimes;
+
+  model.cleanup();
 }

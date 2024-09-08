@@ -31,7 +31,7 @@ bool setup(LDSPcontext *context, void *userData)
 {
     std::string modelPath = "./"+modelName+"."+modelType;
     if (!model.setup("session1", modelPath.c_str()))
-        printf("unable to setup ortModel\n");
+        printf("unable to setup model\n");
 
     writePointer = w; // the first w samples must be zeros
     readPointer = 0;
@@ -111,4 +111,6 @@ void cleanup(LDSPcontext *context, void *userData)
   logFile.close();
 
   delete[] inferenceTimes;
+
+  model.cleanup();
 }

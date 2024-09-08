@@ -5,7 +5,7 @@ std::string modelType = "onnx";
 std::string modelName = "baseline";
 int numInputSamples = 1;
 
-OrtModel ortModel;
+OrtModel model;
 
 float input[1] = {0};
 float output[1];
@@ -14,8 +14,8 @@ float output[1];
 bool setup(LDSPcontext *context, void *userData) {
 
   std::string modelPath = "./"+modelName+"."+modelType;
-  if (!ortModel.setup("session1", modelPath))
-    printf("unable to setup ortModel\n");
+  if (!model.setup("session1", modelPath))
+    printf("unable to setup model\n");
 
   return true;
 }
@@ -27,7 +27,7 @@ void render(LDSPcontext *context, void *userData)
     float out = audioRead(context, n, 0);
 
     // Run the model
-    ortModel.run(input, output);
+    model.run(input, output);
 
     // passthrough test, because the model may not be trained
     audioWrite(context, n, 0, out);
@@ -37,5 +37,6 @@ void render(LDSPcontext *context, void *userData)
 
 void cleanup(LDSPcontext *context, void *userData)
 {
+  model.cleanup();
 }
 
